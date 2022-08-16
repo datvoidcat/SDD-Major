@@ -70,7 +70,10 @@ class Virus():
 
         self.starting_population()
 
-
+        """
+        The function `starting_population` creates a population of 4200 people, and assigns the first
+        person to be infected
+        """
     def starting_population(self):
         population = 4200
         self.num_currently_infected = 1
@@ -127,7 +130,15 @@ class Virus():
         self.update_status()
         self.update_text()
 
-
+        """
+        It takes in the current index, the thetas and rs, and the color, and plots the point at the
+        current index
+        
+        :param i: the index of the current point
+        :param thetas: the list of theta values
+        :param rs: the radius of the point
+        :param color: The color of the points
+        """
     def one_by_one(self, i, thetas, rs, color):
         self.axes.scatter(thetas[i], rs[i], s=5, color=color)
         if i == (len(thetas) - 1):
@@ -140,6 +151,26 @@ class Virus():
             yield a_list[i:i + n]
 
 
+    """
+        We randomly assign a subset of the newly infected to have mild symptoms, and the rest to have
+        strong symptoms. 
+        
+        We then randomly assign a recovery or death day to each of the newly infected. 
+        
+        The recovery and death days are randomly chosen from a range of days. 
+        
+        The range of days is determined by the fast and slow recovery/death days. 
+        
+        The fast and slow recovery/death days are determined by the mild_fast, mild_slow, strong_fast,
+        strong_slow, death_fast, and death_slow parameters. 
+        
+        The fast and slow recovery/death days are randomly chosen from a range of days. 
+        
+        The range of days is determined by the fast and slow recovery/death days. 
+        
+        The fast and slow recovery/death days are determined by the mild_fast, mild_slow, strong_fast,
+        strong_slow, death_fast, and death_slow parameters
+        """
     def assign_symptoms(self):
         num_mild = round(self.percent_mild * self.num_new_infected)
         num_strong = round(self.percent_strong * self.num_new_infected)
@@ -181,7 +212,12 @@ class Virus():
             self.strong["death"][death_day]["thetas"].append(death_theta)
             self.strong["death"][death_day]["rs"].append(death_r)
 
-
+    """
+        If the day is greater than the day that the mild cases are supposed to recover, then plot the
+        mild cases as green(recovered). If the day is greater than the day that the strong cases are supposed to
+        recover, then plot the strong cases as green(recovered). If the day is greater than the day that the strong
+        cases are supposed to die, then plot the strong cases as black(dead)
+        """
     def update_status(self):
         if self.day >= self.mild_fast:
             mild_thetas = self.mild[self.day]["thetas"]
