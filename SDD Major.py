@@ -1,7 +1,18 @@
 import matplotlib.pyplot as plt
 import matplotlib.animation as ani
 import numpy as np
-from matplotlib.widgets import Button
+
+import tkinter
+import tkinter.messagebox
+
+top = tkinter.Tk()
+top.geometry("200x100")
+
+exit_button = tkinter.Button(top, text="Start Simulation", command=top.destroy)
+exit_button.pack(pady=20)
+
+top.mainloop()
+
 
 GREY = (0.78, 0.78, 0.78)  # Healthy
 RED = (0.96, 0.15, 0.15)   # Infected
