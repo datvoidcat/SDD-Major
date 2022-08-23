@@ -9,11 +9,29 @@ import tkinter.messagebox
 startscreen = tkinter.Tk()
 startscreen.geometry("500x300")
 
+def openAdvsettings():
+     
+    Advsettings = Toplevel(startscreen)
+ 
+    Advsettings.title("Advanced settings")
+ 
+    Advsettings.geometry("500x300")
+     
+    def advClose():
+        Advsettings.destroy()
+
+    exit_button = tkinter.Button(Advsettings, text="Return to main menu", command=advClose)
+    exit_button.pack(pady=20)
+
 def Close():
     startscreen.destroy()
 
-exit_button = tkinter.Button(startscreen, text="Start Simulation", command=Close)
+exit_button = Button(startscreen, text="Start Simulation", command=Close)
 exit_button.pack(pady=20)
+ 
+varbtn = Button(startscreen, text ="Advanced settings", command = openAdvsettings)
+varbtn.pack(pady=20)
+
 
 startscreen.mainloop()
 
