@@ -2,16 +2,20 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as ani
 import numpy as np
 
-import tkinter
+from tkinter import *
+from tkinter.ttk import *
 import tkinter.messagebox
 
-top = tkinter.Tk()
-top.geometry("200x100")
+startscreen = tkinter.Tk()
+startscreen.geometry("500x300")
 
-exit_button = tkinter.Button(top, text="Start Simulation", command=top.destroy)
+def Close():
+    startscreen.destroy()
+
+exit_button = tkinter.Button(startscreen, text="Start Simulation", command=Close)
 exit_button.pack(pady=20)
 
-top.mainloop()
+startscreen.mainloop()
 
 
 GREY = (0.78, 0.78, 0.78)  # Healthy
@@ -19,16 +23,28 @@ RED = (0.96, 0.15, 0.15)   # Infected
 GREEN = (0, 0.86, 0.03)    # Recovered
 BLACK = (0, 0, 0)          # Dead
 
+setr0 = 2.28
+setincubation = 5
+setpercent_weak = 0.8
+setweak_recovery = (7, 14)
+setpercent_strong = 0.2
+setstrong_recovery = (21, 42)
+setstrong_death = (14, 56)
+setfatality_rate = 0.034
+setserial_interval = 7
+
+#try using buttons to change setr0, hopefully that works
+
 Covid_Settings = {
-    "r0": 2.28,
-    "incubation": 5,
-    "percent_weak": 0.8,
-    "weak_recovery": (7, 14),
-    "percent_strong": 0.2,
-    "strong_recovery": (21, 42),
-    "strong_death": (14, 56),
-    "fatality_rate": 0.034,
-    "serial_interval": 7
+    "r0": setr0,
+    "incubation": setincubation,
+    "percent_weak": setpercent_weak,
+    "weak_recovery": setweak_recovery,
+    "percent_strong": setpercent_strong,
+    "strong_recovery": setstrong_recovery,
+    "strong_death": setstrong_death,
+    "fatality_rate": setfatality_rate,
+    "serial_interval": setserial_interval
 }
 
 
