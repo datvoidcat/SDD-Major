@@ -1,3 +1,4 @@
+from glob import glob
 import matplotlib.pyplot as plt
 import matplotlib.animation as ani
 import numpy as np
@@ -6,22 +7,188 @@ from tkinter import *
 from tkinter.ttk import *
 import tkinter.messagebox
 
+setr0 = 2.28
+setincubation = 5
+setpercent_weak = 0.8
+setweak_recovery = (7,14)
+setpercent_strong = 0.2
+setstrong_recovery = (21,42)
+setstrong_death = (14,56)
+setfatality_rate = 0.034
+setserial_interval = 7
+
 startscreen = tkinter.Tk()
 startscreen.geometry("500x300")
 
 def openAdvsettings():
-     
+    global setr0
+    global setincubation
+    global setpercent_weak
+    global setweak_recovery
+    global setpercent_strong
+    global setstrong_recovery
+    global setstrong_death
+    global setfatality_rate
+    global setserial_interval
     Advsettings = Toplevel(startscreen)
  
     Advsettings.title("Advanced settings")
  
-    Advsettings.geometry("500x300")
-     
+    Advsettings.geometry("500x1500")
+
+    r0_label = tkinter.Label(Advsettings, text='r0, default = 2.28')
+    #r0_label.pack(pady=10)
+    r0_entry = tkinter.Entry (Advsettings) 
+    #r0_entry.pack(pady=10)
+    def change_r0 (): 
+        global setr0
+        x1 = r0_entry.get()
+        setr0 = str(x1)
+        print(setr0)
+    r0_button = Button(Advsettings, text='Change r0', command=change_r0)
+    #r0_button.pack(pady=10)
+
+    r0_label.grid(row=1, column=1)
+    r0_entry.grid(row=1, column=2)
+    r0_button.grid(row=2, column=2, padx=10, pady=10)
+
+    inc_label = tkinter.Label(Advsettings, text='Incubation, default = 5')
+    inc_label.pack(pady=10)
+    inc_entry = tkinter.Entry (Advsettings) 
+    inc_entry.pack(pady=10)
+    def change_inc ():  
+        global setincubation
+        x2 = inc_entry.get()
+        setincubation = str(x2)
+        print(setincubation)
+    inc_button = Button(Advsettings, text='Change incubation period', command=change_inc)
+    inc_button.pack(pady=10)
+
+    inc_label.grid(row=3, column=1)
+    inc_entry.grid(row=3, column=2)
+    inc_button.grid(row=4, column=2, padx=10, pady=10)
+
+    pweak_label = tkinter.Label(Advsettings, text='Percent weak, default = 0.8')
+    #pweak_label.pack(pady=10)
+    pweak_entry = tkinter.Entry (Advsettings) 
+    #pweak_entry.pack(pady=10)
+    def change_pweak (): 
+        global setpercent_weak 
+        x3 = pweak_entry.get()
+        setpercent_weak = str(x3)
+        print(setpercent_weak)
+    pweak_button = Button(Advsettings, text='Change percent weak', command=change_pweak)
+    #pweak_button.pack(pady=10)
+
+    pweak_label.grid(row=5, column=1)
+    pweak_entry.grid(row=5, column=2)
+    pweak_button.grid(row=6, column=2, padx=10, pady=10)
+
+    weakrec_label = tkinter.Label(Advsettings, text='Weak recovery, default = (7, 14)')
+    #weakrec_label.pack(pady=10)
+    weakrec_entry = tkinter.Entry (Advsettings) 
+    #weakrec_entry.pack(pady=10)
+    def change_weakrec ():
+        global setweak_recovery  
+        x4 = weakrec_entry.get()
+        setweak_recovery = str(x4)
+        print(setweak_recovery)
+    weakrec_button = Button(Advsettings, text='Change weak recovery time', command=change_weakrec)
+    #weakrec_button.pack(pady=10)
+
+    weakrec_label.grid(row=7, column=1)
+    weakrec_entry.grid(row=7, column=2)
+    weakrec_button.grid(row=8, column=2, padx=10, pady=10)
+
+    pstrong_label = tkinter.Label(Advsettings, text='Percent strong, default = 0.2')
+    #pstrong_label.pack(pady=10)
+    pstrong_entry = tkinter.Entry (Advsettings) 
+    #pstrong_entry.pack(pady=10)
+    def change_pstrong (): 
+        global setpercent_strong 
+        x5 = pstrong_entry.get()
+        setpercent_strong = str(x5)
+        print(setpercent_strong)
+    pstrong_button = Button(Advsettings, text='Change percent strong', command=change_pstrong)
+    #pstrong_button.pack(pady=10)
+
+    pstrong_label.grid(row=9, column=1)
+    pstrong_entry.grid(row=9, column=2)
+    pstrong_button.grid(row=10, column=2, padx=10, pady=10)
+
+    strongrec_label = tkinter.Label(Advsettings, text='Strong recovery, default = (21, 42)')
+    #strongrec_label.pack(pady=10)
+    strongrec_entry = tkinter.Entry (Advsettings) 
+    #strongrec_entry.pack(pady=10)
+    def change_strongrec ():  
+        global setstrong_recovery
+        x6 = strongrec_entry.get()
+        setstrong_recovery = str(x6)
+        print(setstrong_recovery)
+    strongrec_button = Button(Advsettings, text='Change strong recovery time', command=change_strongrec)
+    #strongrec_button.pack(pady=10)
+
+    strongrec_label.grid(row=11, column=1)
+    strongrec_entry.grid(row=11, column=2)
+    strongrec_button.grid(row=12, column=2, padx=10, pady=10)
+
+    dstrong_label = tkinter.Label(Advsettings, text='Strong death, default = (14, 56)')
+    #dstrong_label.pack(pady=10)
+    dstrong_entry = tkinter.Entry (Advsettings) 
+    #dstrong_entry.pack(pady=10)
+    def change_dstrong ():  
+        global setstrong_death
+        x7 = dstrong_entry.get()
+        setstrong_death = str(x7)
+        print(setstrong_death)
+    dstrong_button = Button(Advsettings, text='Change strong death time', command=change_dstrong)
+    #dstrong_button.pack(pady=10)
+
+    dstrong_label.grid(row=13, column=1)
+    dstrong_entry.grid(row=13, column=2)
+    dstrong_button.grid(row=14, column=2, padx=10, pady=10)
+
+    frate_label = tkinter.Label(Advsettings, text='Fatality rate, default = 0.034')
+    #frate_label.pack(pady=10)
+    frate_entry = tkinter.Entry (Advsettings) 
+    #frate_entry.pack(pady=10)
+    def change_frate ():  
+        global setfatality_rate
+        x8 = frate_entry.get()
+        setfatality_rate = str(x8)
+        print(setfatality_rate)
+    frate_button = Button(Advsettings, text='Change fatality rate', command=change_frate)
+    #frate_button.pack(pady=10)
+
+    frate_label.grid(row=15, column=1)
+    frate_entry.grid(row=15, column=2)
+    frate_button.grid(row=16, column=2, padx=10, pady=10)
+
+    ##### FIND OUT WHAT THIS DOES
+
+    serialint_label = tkinter.Label(Advsettings, text='Serial interval, default = 7')
+    #serialint_label.pack(pady=10)
+    serialint_entry = tkinter.Entry (Advsettings) 
+    #serialint_entry.pack(pady=10)
+    def change_serialint ():  
+        global setserial_interval
+        x9 = serialint_entry.get()
+        setserial_interval = str(x9)
+        print(setserial_interval)
+    serialint_button = Button(Advsettings, text='Change serial interval', command=change_serialint)
+    #serialint_button.pack(pady=10)
+
+    serialint_label.grid(row=17, column=1)
+    serialint_entry.grid(row=17, column=2)
+    serialint_button.grid(row=18, column=2, padx=10, pady=10)
+
     def advClose():
+        #print(setr0)
+
         Advsettings.destroy()
 
-    exit_button = tkinter.Button(Advsettings, text="Return to main menu", command=advClose)
-    exit_button.pack(pady=20)
+    exit_button = Button(Advsettings, text="Return to main menu", command=advClose)
+    exit_button.grid(row=20, column=2, padx=10, pady=10)
 
 def Close():
     startscreen.destroy()
@@ -29,8 +196,10 @@ def Close():
 exit_button = Button(startscreen, text="Start Simulation", command=Close)
 exit_button.pack(pady=20)
  
-varbtn = Button(startscreen, text ="Advanced settings", command = openAdvsettings)
-varbtn.pack(pady=20)
+### Volatile advanced settings for changing variables
+# May cause issues 
+#varbtn = Button(startscreen, text ="Advanced settings", command = openAdvsettings)
+#varbtn.pack(pady=20)
 
 
 startscreen.mainloop()
@@ -41,15 +210,14 @@ RED = (0.96, 0.15, 0.15)   # Infected
 GREEN = (0, 0.86, 0.03)    # Recovered
 BLACK = (0, 0, 0)          # Dead
 
-setr0 = 2.28
-setincubation = 5
-setpercent_weak = 0.8
-setweak_recovery = (7, 14)
-setpercent_strong = 0.2
-setstrong_recovery = (21, 42)
-setstrong_death = (14, 56)
-setfatality_rate = 0.034
-setserial_interval = 7
+print(setr0)
+print(setincubation)
+print(setweak_recovery)
+print(setpercent_strong)
+print(setstrong_recovery)
+print(setstrong_death)
+print(setfatality_rate)
+print(setserial_interval)
 
 #try using buttons to change setr0, hopefully that works
 
@@ -99,6 +267,7 @@ class Virus():
         self.serial_interval = params["serial_interval"]
 
         self.weak_fast = params["incubation"] + params["weak_recovery"][0]
+        #self.weak_fast = float(self.weak_fast)
         self.weak_slow = params["incubation"] + params["weak_recovery"][1]
         self.strong_fast = params["incubation"] + params["strong_recovery"][0]
         self.strong_slow = params["incubation"] + params["strong_recovery"][1]
