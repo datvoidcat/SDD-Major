@@ -7,7 +7,7 @@ from tkinter import *
 from tkinter.ttk import *
 import tkinter.messagebox
 
-# Defining the variables that control what virus is being modelled
+# Defining the variables that control what virus is being modelled, currently set to model Covid
 setr0 = 2.28
 setincubation = 5
 setpercent_weak = 0.8
@@ -40,14 +40,11 @@ def openAdvsettings():
 
     # Button for changing the value of r0 (average number of new infections as a result of 1 person becoming infected)
     r0_label = tkinter.Label(Advsettings, text='r0, default = 2.28')
-    #r0_label.pack(pady=10)
     r0_entry = tkinter.Entry (Advsettings) 
-    #r0_entry.pack(pady=10)
     def change_r0 (): 
         global setr0
         x1 = r0_entry.get()
         setr0 = str(x1)
-        #print(setr0)
     r0_button = Button(Advsettings, text='Change r0', command=change_r0)
 
     r0_label.grid(row=1, column=1)
@@ -300,9 +297,9 @@ class Virus():
         population = 4200
         self.num_currently_infected = 1
         self.total_infected = 1
-        indices = np.arange(0, population) + 0.5
-        self.thetas = np.pi * (1 + 5**0.5) * indices
-        self.rs = np.sqrt(indices / population)
+        number = np.arange(0, population) + 0.5
+        self.thetas = np.pi * (1 + 5**0.5) * number
+        self.rs = np.sqrt(number / population)
         self.plot = self.axes.scatter(self.thetas, self.rs, s=5, color=GREY)
         # assign the middle person to be patient zero
         self.axes.scatter(self.thetas[0], self.rs[0], s=5, color=RED)
@@ -320,24 +317,24 @@ class Virus():
                 self.affected_after = 4200
             self.num_currently_infected += self.num_new_infected
             self.total_infected += self.num_new_infected
-            self.new_infected_indices = list(
+            self.new_infected_number = list(
                 np.random.choice(
                     range(self.affected_before, self.affected_after),
                     self.num_new_infected,
                     replace=False))
-            thetas = [self.thetas[i] for i in self.new_infected_indices]
-            rs = [self.rs[i] for i in self.new_infected_indices]
+            thetas = [self.thetas[i] for i in self.new_infected_number]
+            rs = [self.rs[i] for i in self.new_infected_number]
             self.anim.event_source.stop()
-            if len(self.new_infected_indices) > 24:
-                size_list = round(len(self.new_infected_indices) / 24)
-                theta_chunks = list(self.chunks(thetas, size_list))
-                r_chunks = list(self.chunks(rs, size_list))
+            if len(self.new_infected_number) > 24:
+                size_list = round(len(self.new_infected_number) / 24)
+                theta_groups = list(self.groups(thetas, size_list))
+                r_groups = list(self.groups(rs, size_list))
                 self.anim2 = ani.FuncAnimation(
                     self.fig,
                     self.one_by_one,
                     interval=50,
-                    frames=len(theta_chunks),
-                    fargs=(theta_chunks, r_chunks, RED))
+                    frames=len(theta_groups),
+                    fargs=(theta_groups, r_groups, RED))
             else:
                 self.anim2 = ani.FuncAnimation(
                     self.fig,
@@ -361,6 +358,7 @@ class Virus():
         :param rs: the radius of the point
         :param color: The color of the points
         """
+
     def one_by_one(self, i, thetas, rs, color):
         self.axes.scatter(thetas[i], rs[i], s=5, color=color)
         if i == (len(thetas) - 1):
@@ -368,7 +366,7 @@ class Virus():
             self.anim.event_source.start()
 
 
-    def chunks(self, a_list, n):
+    def groups(self, a_list, n):
         for i in range(0, len(a_list), n):
             yield a_list[i:i + n]
 
@@ -397,21 +395,21 @@ class Virus():
         num_weak = round(self.percent_weak * self.num_new_infected)
         num_strong = round(self.percent_strong * self.num_new_infected)
         # choose random subset of newly infected to have weak symptoms
-        self.weak_indices = np.random.choice(self.new_infected_indices, num_weak, replace=False)
+        self.weak_number = np.random.choice(self.new_infected_number, num_weak, replace=False)
         # assign the rest strong symptoms, either resulting in recovery or death
-        remaining_indices = [i for i in self.new_infected_indices if i not in self.weak_indices]
+        remaining_number = [i for i in self.new_infected_number if i not in self.weak_number]
         percent_strong_recovery = 1 - (self.fatality_rate / self.percent_strong)
         num_strong_recovery = round(percent_strong_recovery * num_strong)
-        self.strong_indices = []
-        self.death_indices = []
-        if remaining_indices:
-            self.strong_indices = np.random.choice(remaining_indices, num_strong_recovery, replace=False)
-            self.death_indices = [i for i in remaining_indices if i not in self.strong_indices]
+        self.strong_number = []
+        self.death_number = []
+        if remaining_number:
+            self.strong_number = np.random.choice(remaining_number, num_strong_recovery, replace=False)
+            self.death_number = [i for i in remaining_number if i not in self.strong_number]
 
         # assign recovery/death day
         low = self.day + self.weak_fast
         high = self.day + self.weak_slow
-        for weak in self.weak_indices:
+        for weak in self.weak_number:
             recovery_day = np.random.randint(low, high)
             weak_theta = self.thetas[weak]
             weak_r = self.rs[weak]
@@ -419,7 +417,7 @@ class Virus():
             self.weak[recovery_day]["rs"].append(weak_r)
         low = self.day + self.strong_fast
         high = self.day + self.strong_slow
-        for recovery in self.strong_indices:
+        for recovery in self.strong_number:
             recovery_day = np.random.randint(low, high)
             recovery_theta = self.thetas[recovery]
             recovery_r = self.rs[recovery]
@@ -427,7 +425,7 @@ class Virus():
             self.strong["recovery"][recovery_day]["rs"].append(recovery_r)
         low = self.day + self.death_fast
         high = self.day + self.death_slow
-        for death in self.death_indices:
+        for death in self.death_number:
             death_day = np.random.randint(low, high)
             death_theta = self.thetas[death]
             death_r = self.rs[death]
