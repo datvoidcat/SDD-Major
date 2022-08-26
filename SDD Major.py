@@ -7,6 +7,7 @@ from tkinter import *
 from tkinter.ttk import *
 import tkinter.messagebox
 
+# Defining the variables that control what virus is being modelled
 setr0 = 2.28
 setincubation = 5
 setpercent_weak = 0.8
@@ -18,6 +19,7 @@ setfatality_rate = 0.034
 setserial_interval = 7
 
 startscreen = tkinter.Tk()
+startscreen.title("Covid simulation")
 startscreen.geometry("500x300")
 
 def openAdvsettings():
@@ -34,8 +36,9 @@ def openAdvsettings():
  
     Advsettings.title("Advanced settings")
  
-    Advsettings.geometry("500x1500")
+    Advsettings.geometry("500x1000")
 
+    # Button for changing the value of r0 (average number of new infections as a result of 1 person becoming infected)
     r0_label = tkinter.Label(Advsettings, text='r0, default = 2.28')
     #r0_label.pack(pady=10)
     r0_entry = tkinter.Entry (Advsettings) 
@@ -44,147 +47,127 @@ def openAdvsettings():
         global setr0
         x1 = r0_entry.get()
         setr0 = str(x1)
-        print(setr0)
+        #print(setr0)
     r0_button = Button(Advsettings, text='Change r0', command=change_r0)
-    #r0_button.pack(pady=10)
 
     r0_label.grid(row=1, column=1)
     r0_entry.grid(row=1, column=2)
     r0_button.grid(row=2, column=2, padx=10, pady=10)
 
+    # Button for changing the incubation period
     inc_label = tkinter.Label(Advsettings, text='Incubation, default = 5')
-    inc_label.pack(pady=10)
     inc_entry = tkinter.Entry (Advsettings) 
-    inc_entry.pack(pady=10)
     def change_inc ():  
         global setincubation
         x2 = inc_entry.get()
         setincubation = str(x2)
         print(setincubation)
     inc_button = Button(Advsettings, text='Change incubation period', command=change_inc)
-    inc_button.pack(pady=10)
 
     inc_label.grid(row=3, column=1)
     inc_entry.grid(row=3, column=2)
     inc_button.grid(row=4, column=2, padx=10, pady=10)
 
+    # Button for changing the chance of a case being considered 'weak'
     pweak_label = tkinter.Label(Advsettings, text='Percent weak, default = 0.8')
-    #pweak_label.pack(pady=10)
     pweak_entry = tkinter.Entry (Advsettings) 
-    #pweak_entry.pack(pady=10)
     def change_pweak (): 
         global setpercent_weak 
         x3 = pweak_entry.get()
         setpercent_weak = str(x3)
         print(setpercent_weak)
     pweak_button = Button(Advsettings, text='Change percent weak', command=change_pweak)
-    #pweak_button.pack(pady=10)
 
     pweak_label.grid(row=5, column=1)
     pweak_entry.grid(row=5, column=2)
     pweak_button.grid(row=6, column=2, padx=10, pady=10)
 
+    # Button for changing the time until recovery from a weak case
     weakrec_label = tkinter.Label(Advsettings, text='Weak recovery, default = (7, 14)')
-    #weakrec_label.pack(pady=10)
     weakrec_entry = tkinter.Entry (Advsettings) 
-    #weakrec_entry.pack(pady=10)
     def change_weakrec ():
         global setweak_recovery  
         x4 = weakrec_entry.get()
         setweak_recovery = str(x4)
         print(setweak_recovery)
     weakrec_button = Button(Advsettings, text='Change weak recovery time', command=change_weakrec)
-    #weakrec_button.pack(pady=10)
 
     weakrec_label.grid(row=7, column=1)
     weakrec_entry.grid(row=7, column=2)
     weakrec_button.grid(row=8, column=2, padx=10, pady=10)
 
+    # Button for changing the chance of cases being considered 'strong'
     pstrong_label = tkinter.Label(Advsettings, text='Percent strong, default = 0.2')
-    #pstrong_label.pack(pady=10)
     pstrong_entry = tkinter.Entry (Advsettings) 
-    #pstrong_entry.pack(pady=10)
     def change_pstrong (): 
         global setpercent_strong 
         x5 = pstrong_entry.get()
         setpercent_strong = str(x5)
         print(setpercent_strong)
     pstrong_button = Button(Advsettings, text='Change percent strong', command=change_pstrong)
-    #pstrong_button.pack(pady=10)
 
     pstrong_label.grid(row=9, column=1)
     pstrong_entry.grid(row=9, column=2)
     pstrong_button.grid(row=10, column=2, padx=10, pady=10)
 
+    # Button for changing the time until recovery from a strong case
     strongrec_label = tkinter.Label(Advsettings, text='Strong recovery, default = (21, 42)')
-    #strongrec_label.pack(pady=10)
     strongrec_entry = tkinter.Entry (Advsettings) 
-    #strongrec_entry.pack(pady=10)
     def change_strongrec ():  
         global setstrong_recovery
         x6 = strongrec_entry.get()
         setstrong_recovery = str(x6)
         print(setstrong_recovery)
     strongrec_button = Button(Advsettings, text='Change strong recovery time', command=change_strongrec)
-    #strongrec_button.pack(pady=10)
 
     strongrec_label.grid(row=11, column=1)
     strongrec_entry.grid(row=11, column=2)
     strongrec_button.grid(row=12, column=2, padx=10, pady=10)
 
+    # Button for changing the time until death due to a strong case
     dstrong_label = tkinter.Label(Advsettings, text='Strong death, default = (14, 56)')
-    #dstrong_label.pack(pady=10)
     dstrong_entry = tkinter.Entry (Advsettings) 
-    #dstrong_entry.pack(pady=10)
     def change_dstrong ():  
         global setstrong_death
         x7 = dstrong_entry.get()
         setstrong_death = str(x7)
         print(setstrong_death)
     dstrong_button = Button(Advsettings, text='Change strong death time', command=change_dstrong)
-    #dstrong_button.pack(pady=10)
 
     dstrong_label.grid(row=13, column=1)
     dstrong_entry.grid(row=13, column=2)
     dstrong_button.grid(row=14, column=2, padx=10, pady=10)
 
+    # Button for changing the fatality rate
     frate_label = tkinter.Label(Advsettings, text='Fatality rate, default = 0.034')
-    #frate_label.pack(pady=10)
     frate_entry = tkinter.Entry (Advsettings) 
-    #frate_entry.pack(pady=10)
     def change_frate ():  
         global setfatality_rate
         x8 = frate_entry.get()
         setfatality_rate = str(x8)
         print(setfatality_rate)
     frate_button = Button(Advsettings, text='Change fatality rate', command=change_frate)
-    #frate_button.pack(pady=10)
 
     frate_label.grid(row=15, column=1)
     frate_entry.grid(row=15, column=2)
     frate_button.grid(row=16, column=2, padx=10, pady=10)
 
-    ##### FIND OUT WHAT THIS DOES
-
+    # Button for changing the serial interval
     serialint_label = tkinter.Label(Advsettings, text='Serial interval, default = 7')
-    #serialint_label.pack(pady=10)
     serialint_entry = tkinter.Entry (Advsettings) 
-    #serialint_entry.pack(pady=10)
     def change_serialint ():  
         global setserial_interval
         x9 = serialint_entry.get()
         setserial_interval = str(x9)
         print(setserial_interval)
     serialint_button = Button(Advsettings, text='Change serial interval', command=change_serialint)
-    #serialint_button.pack(pady=10)
 
     serialint_label.grid(row=17, column=1)
     serialint_entry.grid(row=17, column=2)
     serialint_button.grid(row=18, column=2, padx=10, pady=10)
 
+    # closes the advanced settings menu
     def advClose():
-        #print(setr0)
-
         Advsettings.destroy()
 
     exit_button = Button(Advsettings, text="Return to main menu", command=advClose)
@@ -198,40 +181,64 @@ exit_button.pack(pady=20)
  
 ### Volatile advanced settings for changing variables
 # May cause issues 
-#varbtn = Button(startscreen, text ="Advanced settings", command = openAdvsettings)
-#varbtn.pack(pady=20)
+varbtn = Button(startscreen, text ="Advanced settings", command = openAdvsettings)
+varbtn.pack(pady=20)
+
+
+def opencreditsb():
+
+    creditsb = Toplevel(startscreen)
+ 
+    creditsb.title("Credits")
+ 
+    creditsb.geometry("400x200")
+
+    credittext = Label(creditsb, text="Made by Alex Soo, some code borrowed from kiteco")
+    credittext.pack(pady=20)
+
+    def credclose():
+        creditsb.destroy()
+    
+    exit_buttoncred = Button(creditsb, text="Return to main menu", command=credclose)
+    exit_buttoncred.pack(pady=20)
+
+creditbtn = Button(startscreen, text="Credits", command=opencreditsb)
+creditbtn.pack(pady=20)
 
 
 startscreen.mainloop()
 
 
-GREY = (0.78, 0.78, 0.78)  # Healthy
-RED = (0.96, 0.15, 0.15)   # Infected
-GREEN = (0, 0.86, 0.03)    # Recovered
+GREY = (0.75, 0.75, 0.75)  # Healthy
+RED = (1, 0, 0)   # Infected
+GREEN = (0, 1, 0)    # Recovered
 BLACK = (0, 0, 0)          # Dead
 
-print(setr0)
-print(setincubation)
-print(setweak_recovery)
-print(setpercent_strong)
-print(setstrong_recovery)
-print(setstrong_death)
-print(setfatality_rate)
-print(setserial_interval)
+#print(setr0)
+#print(setincubation)
+#print(setweak_recovery)
+#print(setpercent_strong)
+#print(setstrong_recovery)
+#print(setstrong_death)
+#print(setfatality_rate)
+#print(setserial_interval)
 
 #try using buttons to change setr0, hopefully that works
 
 Covid_Settings = {
-    "r0": setr0,
+    "r0": float(setr0),
     "incubation": setincubation,
-    "percent_weak": setpercent_weak,
+    "percent_weak": float(setpercent_weak),
     "weak_recovery": setweak_recovery,
-    "percent_strong": setpercent_strong,
+    "percent_strong": float(setpercent_strong),
     "strong_recovery": setstrong_recovery,
     "strong_death": setstrong_death,
-    "fatality_rate": setfatality_rate,
+    "fatality_rate": float(setfatality_rate),
     "serial_interval": setserial_interval
 }
+
+day_graph = []
+infect_graph = []
 
 
 class Virus():
@@ -460,6 +467,13 @@ class Virus():
         self.deaths_text.set_text("\nDeaths: {}".format(self.num_deaths))
         self.recovered_text.set_text("\n\nRecovered: {}".format(self.num_recovered))
 
+        
+        day_graph.append(self.day)
+        #print(day_graph)
+
+        infect_graph.append(self.num_currently_infected)
+        #print(infect_graph)
+
 
     def gen(self):
         while self.num_deaths + self.num_recovered < self.total_infected:
@@ -479,6 +493,19 @@ def main():
     coronavirus.animated()
     plt.show()
 
+def main2():
+    x = np.array(day_graph)
+    y = np.array(infect_graph)
+    plt.plot(x, y)
+    #graph2 = plt.plot(day_graph, infect_graph)
+    plt.xlabel("Day")
+    plt.ylabel("Num. currently infected")
+    plt.show()
+
+
+#def main2():
+
 
 if __name__ == "__main__":
     main()
+    main2()
