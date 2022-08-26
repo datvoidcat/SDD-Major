@@ -209,10 +209,10 @@ creditbtn.pack(pady=20)
 startscreen.mainloop()
 
 
-GREY = (0.75, 0.75, 0.75)  # Healthy
-RED = (1, 0, 0)   # Infected
-GREEN = (0, 1, 0)    # Recovered
-BLACK = (0, 0, 0)          # Dead
+GREY = (0.75, 0.75, 0.75)   # Healthy
+RED = (1, 0, 0)    # Infected
+GREEN = (0, 1, 0)   # Recovered
+BLACK = (0, 0, 0)   # Dead
 
 #print(setr0)
 #print(setincubation)
